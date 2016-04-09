@@ -21,20 +21,19 @@ public class MyApplication extends Application {
     }
 
     private RealmConfiguration buildRealmConfiguration() {
-        return new RealmConfiguration.Builder(this).build();
-//        return new RealmConfiguration.Builder(this)
-//                .schemaVersion(1L)
-//                .migration(new RealmMigration() {
-//                    @Override
-//                    public void migrate(DynamicRealm realm, long oldVersion, long newVersion) {
-//                        if (oldVersion == 0L) {
-//                            final RealmObjectSchema tweetSchema = realm.getSchema().get("Tweet");
-//                            tweetSchema.addField("favorited", boolean.class);
-////noinspection UnusedAssignment
-//                            oldVersion++;
-//                        }
-//                    }
-//                })
-//                .build();
+        return new RealmConfiguration.Builder(this)
+                .schemaVersion(1L)
+                .migration(new RealmMigration() {
+                    @Override
+                    public void migrate(DynamicRealm realm, long oldVersion, long newVersion) {
+                        if (oldVersion == 0L) {
+                            final RealmObjectSchema tweetSchema = realm.getSchema().get("Tweet");
+                            tweetSchema.addField("favorited", boolean.class);
+//noinspection UnusedAssignment
+                            oldVersion++;
+                        }
+                    }
+                })
+                .build();
     }
 }

@@ -20,7 +20,7 @@ public class Tweet extends RealmObject {
         setScreenName(status.getUser().getScreenName());
         setText(status.getText());
         setIconUrl(status.getUser().getProfileImageURLHttps());
-//        setFavorited(status.isFavorited());
+        setFavorited(status.isFavorited());
     }
     public long getId() {
         return id;
@@ -52,10 +52,10 @@ public class Tweet extends RealmObject {
     public void setIconUrl(String iconUrl) {
         this.iconUrl = iconUrl;
     }
-//    public boolean isFavorited() {
-//        return favorited;
-//    }
-//    public void setFavorited(boolean favorited) {
-//        this.favorited = favorited;
-//    }
+    public boolean isFavorited() {
+        return favorited;
+    }
+    public void setFavorited(boolean favorited) {
+        this.favorited = favorited;
+    }
 }
