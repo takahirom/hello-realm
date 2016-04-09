@@ -6,9 +6,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -56,8 +59,11 @@ public class TimelineFragment extends ListFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        //noinspection ConstantConditions
+        final ListView listView = getListView();
+        listView.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
         realm = Realm.getDefaultInstance();
-        final RealmResults<Tweet> tweets = buildTweetList();;
+        final RealmResults<Tweet> tweets = buildTweetList(realm);
         final RealmBaseAdapter<Tweet> adapter = new RealmBaseAdapter<Tweet>(getContext(), tweets, true) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
@@ -69,14 +75,28 @@ public class TimelineFragment extends ListFragment {
                 ((TextView) convertView.findViewById(R.id.screen_name)).setText(tweet.getScreenName());
                 ((TextView) convertView.findViewById(R.id.text)).setText(tweet.getText());
                 Glide.with(TimelineFragment.this).load(tweet.getIconUrl()).into((ImageView) convertView.findViewById(R.id.image));
+                listView.setItemChecked(position, tweet.isFavorited());
                 return convertView;
             }
         };
         setListAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final Tweet tweet = (Tweet) listView.getItemAtPosition(position);
+                realm.executeTransaction(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        tweet.setFavorited(!tweet.isFavorited());
+                    }
+                });
+            }
+        });
     }
 
     @NonNull
-    protected RealmResults<Tweet> buildTweetList() {
+    protected RealmResults<Tweet> buildTweetList(Realm realm) {
         return realm.allObjectsSorted(Tweet.class, "createdAt", Sort.DESCENDING);
     }
 

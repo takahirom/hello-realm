@@ -45,6 +45,7 @@ public class UpdateService extends IntentService {
                 }
             });
         } finally {
+            // getしたらcloseする
             realm.close();
         }
     }

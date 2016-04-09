@@ -23,27 +23,28 @@ public class MainActivity extends AppCompatActivity {
         public MainPagerAdapter(FragmentManager fm) {
             super(fm);
         }
-
         @Override
         public int getCount() {
-            return 1;
+            return 2;
         }
-
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
                     return "タイムライン";
+                case 1:
+                    return "ふぁぼ";
                 default:
                     throw new RuntimeException("unexpected position: " + position);
             }
         }
-
         @Override
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
                     return new TimelineFragment();
+                case 1:
+                    return new FavoritedFragment();
                 default:
                     throw new RuntimeException("unexpected position: " + position);
             }

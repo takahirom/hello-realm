@@ -27,8 +27,8 @@ public class MyApplication extends Application {
                     @Override
                     public void migrate(DynamicRealm realm, long oldVersion, long newVersion) {
                         if (oldVersion == 0L) {
-                            final RealmObjectSchema tweetSchema = realm.getSchema().get("Tweet");
-                            tweetSchema.addField("favorited", boolean.class);
+//                            final RealmObjectSchema tweetSchema = realm.getSchema().get("Tweet");
+//                            tweetSchema.addField("favorited", boolean.class);
 //noinspection UnusedAssignment
                             oldVersion++;
                         }
